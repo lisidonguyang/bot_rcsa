@@ -1,0 +1,21 @@
+services:
+  firefox:
+    image: "selenium/standalone-firefox"
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    shm_size: 2gb
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://51.75.17.83:4444 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  scraper:
+    build: .
+    depends_on:
+      firefox:
+        condition: service_healthy
+
+
+
